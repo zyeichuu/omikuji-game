@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mushroom Omikuji</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="game">
+
+        <!-- START SCREEN -->
+        <div id="startScreen">
+
+            <img
+                id="omikujiBox"
+                src="assets/Omikuji Box Amended.png"
+                alt="Omikuji Box"
+            >
+
+            <button id="drawButton">
+                DRAW YOUR FORTUNE
+            </button>
+
+            <p id="message"></p>
+
+        </div>
+
+
+        <!-- RESULT SCREEN -->
+        <div id="resultScreen" class="hidden">
+
+            <img
+                id="fortuneImage"
+                src=""
+                alt="Your Fortune"
+            >
+
+            <button id="playAgainButton">
+                PLAY AGAIN
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
