@@ -1,56 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Mushroom Omikuji</title>
-
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omikuji Fortune</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div class="game">
+<div class="omikuji-game">
 
-        <!-- START SCREEN -->
-        <div id="startScreen">
+  <!-- DRAW SCREEN -->
+  <section id="drawScreen" class="screen active">
 
-            <img
-                id="omikujiBox"
-                src="assets/Omikuji Box Amended.png"
-                alt="Omikuji Box"
-            >
-
-            <button id="drawButton">
-                DRAW YOUR FORTUNE
-            </button>
-
-            <p id="message"></p>
-
-        </div>
-
-
-        <!-- RESULT SCREEN -->
-        <div id="resultScreen" class="hidden">
-
-            <img
-                id="fortuneImage"
-                src=""
-                alt="Your Fortune"
-            >
-
-            <button id="playAgainButton">
-                PLAY AGAIN
-            </button>
-
-        </div>
-
+    <div class="box-stage" id="boxStage">
+      <!--
+        The four supplied box images are swapped in sequence:
+        0 = no stick
+        1 = stick-1
+        2 = stick-2
+        3 = stick-3
+      -->
+      <img
+        id="boxImage"
+        class="box-image"
+        src="assets/Omikuji-box-no-stick.png"
+        alt="Omikuji box"
+      >
     </div>
 
-    <script src="script.js"></script>
+    <button id="drawButton" class="draw-button" type="button">
+      <span class="jp">おみくじ</span>
+      <span>Draw Your Fortune</span>
+    </button>
 
+    <p id="drawMessage" class="draw-message">
+      Your fortune is waiting.
+    </p>
+
+  </section>
+
+
+  <!-- FORTUNE SCREEN -->
+  <section id="fortuneScreen" class="screen">
+
+    <div class="fortune-card">
+      <img id="fortuneImage" src="" alt="Your Fortune">
+    </div>
+
+    <div class="fortune-buttons">
+      <button id="shareButton" class="share-button" type="button">
+        Share My Fortune
+      </button>
+
+      <button id="againButton" class="again-button" type="button">
+        Draw Again
+      </button>
+
+      <p id="shareStatus" class="share-status" aria-live="polite"></p>
+    </div>
+
+  </section>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
