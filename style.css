@@ -1,12 +1,9 @@
 /* =========================================================
    OMikuji standalone game
-   IMPORTANT: No background colour is applied.
-   The website/page behind this game remains visible.
+   Transparent background for WordPress embedding.
 ========================================================= */
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html,
 body {
@@ -14,27 +11,23 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100%;
-
-  /* Completely transparent */
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
-}
-
-body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* The game itself also has NO background. */
+body { overflow-x: hidden; }
+
+button { font-family: inherit; }
+
 .omikuji-game {
   width: 100%;
   margin: 0 auto;
   padding: 20px 15px 50px;
-
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
-
   overflow: visible;
 }
 
@@ -42,14 +35,11 @@ body {
   display: none;
   width: 100%;
   text-align: center;
-
   background: transparent !important;
   background-color: transparent !important;
 }
 
-.screen.active {
-  display: block;
-}
+.screen.active { display: block; }
 
 /* =========================================================
    BOX
@@ -58,40 +48,24 @@ body {
 .box-stage {
   width: min(100%, 560px);
   height: 650px;
-
   margin: 0 auto;
-
   position: relative;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: transparent !important;
-
   overflow: visible;
 }
 
-/*
-  All four supplied box PNGs should have the SAME canvas size
-  and the box should be in the SAME coordinates in every frame.
-
-  This prevents jumping when the image changes.
-*/
 .box-image {
   position: absolute;
-
   width: 100%;
   height: 100%;
-
   object-fit: contain;
   object-position: center;
-
   display: block;
-
   user-select: none;
   -webkit-user-drag: none;
-
   transform-origin: center center;
 }
 
@@ -123,55 +97,27 @@ body {
 
 .draw-button {
   border: 0;
-
   width: min(560px, 92%);
   padding: 21px 28px;
-
   border-radius: 60px;
-
   background: #df9690;
   color: #ffffff;
-
   font-size: 30px;
   font-weight: 700;
   line-height: 1.2;
-
   cursor: pointer;
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease,
-    opacity .2s ease;
-
+  transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-.draw-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0,0,0,.12);
-}
-
-.draw-button:active {
-  transform: translateY(1px);
-}
-
-.draw-button:disabled {
-  cursor: default;
-}
-
-.draw-button .jp {
-  margin-right: 12px;
-}
-
-/* =========================================================
-   MESSAGE
-========================================================= */
+.draw-button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,.12); }
+.draw-button:active { transform: translateY(1px); }
+.draw-button:disabled { cursor: default; }
+.draw-button .jp { margin-right: 12px; }
 
 .draw-message {
   margin: 32px 0 0;
-
   min-height: 32px;
-
   color: inherit;
   font-size: 24px;
   line-height: 1.4;
@@ -184,39 +130,21 @@ body {
 .fortune-card {
   width: min(100%, 430px);
   margin: 20px auto 30px;
-
   background: transparent !important;
 }
 
 .fortune-card img {
   display: block;
-
   width: 100%;
   height: auto;
-
   background: transparent;
-
   object-fit: contain;
-
   animation: fortuneReveal .7s ease both;
 }
 
 @keyframes fortuneReveal {
-  from {
-    opacity: 0;
-    transform:
-      perspective(900px)
-      rotateY(90deg)
-      scale(.95);
-  }
-
-  to {
-    opacity: 1;
-    transform:
-      perspective(900px)
-      rotateY(0deg)
-      scale(1);
-  }
+  from { opacity: 0; transform: perspective(900px) rotateY(90deg) scale(.95); }
+  to { opacity: 1; transform: perspective(900px) rotateY(0deg) scale(1); }
 }
 
 /* =========================================================
@@ -228,51 +156,126 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 15px;
-
   background: transparent !important;
 }
 
 .share-button,
 .again-button {
   border: 0;
-
   width: min(500px, 92%);
   padding: 18px 28px;
-
   border-radius: 50px;
-
   font-size: 20px;
   font-weight: 700;
-
   cursor: pointer;
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
 
-.share-button {
-  background: #df9690;
-  color: #ffffff;
-}
-
-.again-button {
-  background: #f3d6d2;
-  color: #6d3f3b;
-}
-
+.share-button { background: #df9690; color: #ffffff; }
+.again-button { background: #f3d6d2; color: #6d3f3b; }
 .share-button:hover,
-.again-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,.10);
-}
+.again-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.10); }
 
 .share-status {
   min-height: 24px;
   margin: 0;
-
   font-size: 16px;
   color: inherit;
+}
+
+/* =========================================================
+   SHARE MODAL
+========================================================= */
+
+.share-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0,0,0,.55);
+}
+
+.share-modal.active { display: flex; }
+
+.share-modal-box {
+  position: relative;
+  width: min(430px, 92vw);
+  padding: 34px 24px 26px;
+  border-radius: 24px;
+  background: #fffaf2;
+  box-shadow: 0 20px 60px rgba(0,0,0,.28);
+  text-align: center;
+}
+
+.share-modal-box h2 {
+  margin: 0 0 10px;
+  color: #6d3f3b;
+  font-size: 28px;
+}
+
+.share-modal-box p {
+  margin: 0 0 24px;
+  color: #6d3f3b;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.share-close {
+  position: absolute;
+  top: 7px;
+  right: 11px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  background: transparent;
+  color: #6d3f3b;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.share-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.share-option {
+  display: flex;
+  min-height: 86px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 15px;
+  background: #f3d6d2;
+  color: #6d3f3b;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, color .2s ease;
+}
+
+.share-option:hover { transform: translateY(-3px); background: #df9690; color: #fff; }
+.share-option:active { transform: translateY(0); }
+
+.share-icon {
+  display: block;
+  min-height: 29px;
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.share-option > span:last-child {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@media (max-width: 500px) {
+  .share-options { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* =========================================================
@@ -280,30 +283,10 @@ body {
 ========================================================= */
 
 @media (max-width: 600px) {
-
-  .omikuji-game {
-    padding: 5px 10px 35px;
-  }
-
-  .box-stage {
-    height: 560px;
-  }
-
-  .draw-button {
-    font-size: 23px;
-    padding: 19px 20px;
-  }
-
-  .draw-button .jp {
-    margin-right: 8px;
-  }
-
-  .draw-message {
-    margin-top: 25px;
-    font-size: 20px;
-  }
-
-  .fortune-card {
-    width: min(100%, 390px);
-  }
+  .omikuji-game { padding: 5px 10px 35px; }
+  .box-stage { height: 560px; }
+  .draw-button { font-size: 23px; padding: 19px 20px; }
+  .draw-button .jp { margin-right: 8px; }
+  .draw-message { margin-top: 25px; font-size: 20px; }
+  .fortune-card { width: min(100%, 390px); }
 }

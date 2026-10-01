@@ -1,19 +1,7 @@
 /* =========================================================
-   OMikuji frame sequence
+   OMikuji box frame sequence
+   The supplied PNGs contain the correct physical stick position.
 ========================================================= */
-
-/*
-  EXACT sequence requested:
-
-  1. No stick
-  2. Stick 1
-  3. Stick 2
-  4. Stick 3
-
-  These are image swaps. There is NO CSS-generated stick.
-  Therefore the stick position/direction comes directly from
-  your supplied PNG frames.
-*/
 
 const boxFrames = [
   "assets/Omikuji-box-no-stick.png",
@@ -21,11 +9,6 @@ const boxFrames = [
   "assets/Omikuji-box-stick-2.png",
   "assets/Omikuji-box-stick-3.png"
 ];
-
-
-/* =========================================================
-   Fortune images
-========================================================= */
 
 const fortunes = [
   "assets/Excellent Fortune 1.png",
@@ -39,38 +22,30 @@ const fortunes = [
   "assets/Small Fortune 1.png"
 ];
 
-
-/* =========================================================
-   Elements
-========================================================= */
-
 const boxStage = document.getElementById("boxStage");
 const boxImage = document.getElementById("boxImage");
-
 const drawButton = document.getElementById("drawButton");
 const drawMessage = document.getElementById("drawMessage");
-
 const drawScreen = document.getElementById("drawScreen");
 const fortuneScreen = document.getElementById("fortuneScreen");
-
 const fortuneImage = document.getElementById("fortuneImage");
-
 const shareButton = document.getElementById("shareButton");
 const againButton = document.getElementById("againButton");
 const shareStatus = document.getElementById("shareStatus");
 
-
-/* =========================================================
-   State
-========================================================= */
+const shareModal = document.getElementById("shareModal");
+const closeShareModal = document.getElementById("closeShareModal");
+const shareFortuneText = document.getElementById("shareFortuneText");
+const nativeShareButton = document.getElementById("nativeShareButton");
+const whatsappShare = document.getElementById("whatsappShare");
+const facebookShare = document.getElementById("facebookShare");
+const xShare = document.getElementById("xShare");
+const telegramShare = document.getElementById("telegramShare");
+const copyShare = document.getElementById("copyShare");
 
 let isDrawing = false;
 let usedFortunes = [];
-
-
-/* =========================================================
-   Helpers
-========================================================= */
+let currentFortune = "";
 
 function wait(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -84,128 +59,75 @@ function preloadImages(list) {
 }
 
 function showBoxFrame(index) {
-  if (!boxFrames[index]) return;
-
-  boxImage.src = boxFrames[index];
+  if (boxFrames[index]) boxImage.src = boxFrames[index];
 }
 
-
-/* =========================================================
-   Fortune pool
-   No repeat until all 9 have been used.
-========================================================= */
-
 function getNextFortune() {
+  if (usedFortunes.length >= fortunes.length) usedFortunes = [];
 
-  if (usedFortunes.length >= fortunes.length) {
-    usedFortunes = [];
-  }
-
-  const available = fortunes.filter(
-    file => !usedFortunes.includes(file)
-  );
-
-  const selected =
-    available[Math.floor(Math.random() * available.length)];
-
+  const available = fortunes.filter(file => !usedFortunes.includes(file));
+  const selected = available[Math.floor(Math.random() * available.length)];
   usedFortunes.push(selected);
-
   return selected;
 }
 
+function getFortuneName(file) {
+  const name = file.split("/").pop().replace(/\.png$/i, "");
 
-/* =========================================================
-   Box animation
+  if (name.startsWith("Excellent Fortune")) return "Excellent Fortune";
+  if (name.startsWith("Future Fortune")) return "Future Fortune";
+  if (name.startsWith("Good Fortune")) return "Good Fortune";
+  if (name.startsWith("Small Fortune")) return "Small Fortune";
+  if (name.startsWith("Fortune")) return "Good Fortune";
 
-   NO STICK
-      ↓
-   STICK 1
-      ↓
-   STICK 2
-      ↓
-   STICK 3
-========================================================= */
-
-async function playBoxAnimation() {
-
-  // Always begin from the clean box.
-  showBoxFrame(0);
-
-  // Start shake.
-  boxStage.classList.remove("shaking");
-
-  // Force reflow so the animation restarts every draw.
-  void boxStage.offsetWidth;
-
-  boxStage.classList.add("shaking");
-
-  /*
-    Keep the box shaking before anything appears.
-  */
-  await wait(1500);
-
-
-  /*
-    STICK 1
-  */
-  drawMessage.textContent = "Something is coming out...";
-  showBoxFrame(1);
-
-  await wait(550);
-
-
-  /*
-    STICK 2
-  */
-  showBoxFrame(2);
-
-  await wait(550);
-
-
-  /*
-    STICK 3
-  */
-  showBoxFrame(3);
-
-  await wait(650);
-
-
-  /*
-    Finish.
-  */
-  boxStage.classList.remove("shaking");
-
+  return "My Omikuji Fortune";
 }
 
+function getShareMessage() {
+  return `I just drew my fortune from the HOKTO Mushroom New Year Omikuji! 🍄✨ Try yours too!`;
+}
 
-/* =========================================================
-   Draw fortune
-========================================================= */
+function getShareUrl() {
+  return window.location.href;
+}
+
+async function playBoxAnimation() {
+  showBoxFrame(0);
+  boxStage.classList.remove("shaking");
+  void boxStage.offsetWidth;
+  boxStage.classList.add("shaking");
+
+  await wait(1500);
+
+  drawMessage.textContent = "Something is coming out...";
+  showBoxFrame(1);
+  await wait(550);
+
+  showBoxFrame(2);
+  await wait(550);
+
+  showBoxFrame(3);
+  await wait(650);
+
+  boxStage.classList.remove("shaking");
+}
 
 async function drawFortune() {
-
   if (isDrawing) return;
 
   isDrawing = true;
   drawButton.disabled = true;
-
   drawMessage.textContent = "Shaking the fortune box...";
-
   shareStatus.textContent = "";
 
   await playBoxAnimation();
 
   drawMessage.textContent = "Your fortune has been chosen.";
-
   await wait(400);
 
-  const selectedFortune = getNextFortune();
+  currentFortune = getNextFortune();
+  fortuneImage.src = currentFortune;
 
-  fortuneImage.src = selectedFortune;
-
-  /*
-    Re-trigger the fortune reveal animation.
-  */
   fortuneImage.style.animation = "none";
   void fortuneImage.offsetWidth;
   fortuneImage.style.animation = "";
@@ -217,118 +139,112 @@ async function drawFortune() {
   drawButton.disabled = false;
 }
 
-
-/* =========================================================
-   Draw again
-========================================================= */
-
 function drawAgain() {
-
   if (isDrawing) return;
 
+  closeShare();
   fortuneScreen.classList.remove("active");
   drawScreen.classList.add("active");
-
   showBoxFrame(0);
-
   boxStage.classList.remove("shaking");
-
   drawMessage.textContent = "Your fortune is waiting.";
-
   shareStatus.textContent = "";
 }
 
+function openShare() {
+  shareFortuneText.textContent = getShareMessage();
+  shareModal.classList.add("active");
+  shareModal.setAttribute("aria-hidden", "false");
+}
 
-/* =========================================================
-   Share
-========================================================= */
+function closeShare() {
+  shareModal.classList.remove("active");
+  shareModal.setAttribute("aria-hidden", "true");
+}
 
-async function shareFortune() {
+function shareToWhatsApp() {
+  const text = `${getShareMessage()}\n\n${getShareUrl()}`;
+  const url = "https://wa.me/?text=" + encodeURIComponent(text);
+  window.open(url, "_blank", "noopener,noreferrer");
+}
 
-  const shareData = {
-    title: "My Omikuji Fortune",
-    text: "I just drew my Omikuji fortune! 🎋✨",
-    url: window.location.href
-  };
+function shareToFacebook() {
+  const url = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(getShareUrl());
+  window.open(url, "_blank", "width=600,height=500,noopener,noreferrer");
+}
+
+function shareToX() {
+  const url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(getShareMessage()) + "&url=" + encodeURIComponent(getShareUrl());
+  window.open(url, "_blank", "width=600,height=500,noopener,noreferrer");
+}
+
+function shareToTelegram() {
+  const url = "https://t.me/share/url?url=" + encodeURIComponent(getShareUrl()) + "&text=" + encodeURIComponent(getShareMessage());
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+async function copyShareLink() {
+  const text = `${getShareMessage()}\n\n${getShareUrl()}`;
 
   try {
-
-    if (navigator.share) {
-
-      await navigator.share(shareData);
-
-      shareStatus.textContent =
-        "Thanks for sharing your fortune! ✨";
-
-      return;
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const temp = document.createElement("textarea");
+      temp.value = text;
+      temp.style.position = "fixed";
+      temp.style.opacity = "0";
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      temp.remove();
     }
 
-    if (navigator.clipboard) {
-
-      await navigator.clipboard.writeText(
-        window.location.href
-      );
-
-      shareStatus.textContent =
-        "Link copied! Share it with your friends ✨";
-
-      return;
-    }
-
-    throw new Error("Clipboard unavailable");
-
+    shareStatus.textContent = "Copied! You can now paste your fortune anywhere ✨";
+    closeShare();
   } catch (error) {
-
-    if (error && error.name === "AbortError") {
-      return;
-    }
-
-    /*
-      Older browser fallback.
-    */
-    const temp = document.createElement("textarea");
-
-    temp.value = window.location.href;
-
-    document.body.appendChild(temp);
-
-    temp.select();
-
-    document.execCommand("copy");
-
-    temp.remove();
-
-    shareStatus.textContent =
-      "Link copied! Share it with your friends ✨";
+    shareStatus.textContent = "Please copy the link from your browser to share it.";
   }
 }
 
+async function nativeShare() {
+  const message = getShareMessage();
 
-/* =========================================================
-   Events
-========================================================= */
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: "My Omikuji Fortune",
+        text: message,
+        url: getShareUrl()
+      });
+      shareStatus.textContent = "Thanks for sharing your fortune! ✨";
+      closeShare();
+      return;
+    }
 
-drawButton.addEventListener(
-  "click",
-  drawFortune
-);
+    shareStatus.textContent = "Choose a social platform below ✨";
+  } catch (error) {
+    if (error && error.name === "AbortError") return;
+    shareStatus.textContent = "Choose a social platform below ✨";
+  }
+}
 
-againButton.addEventListener(
-  "click",
-  drawAgain
-);
+shareButton.addEventListener("click", openShare);
+closeShareModal.addEventListener("click", closeShare);
+whatsappShare.addEventListener("click", shareToWhatsApp);
+facebookShare.addEventListener("click", shareToFacebook);
+xShare.addEventListener("click", shareToX);
+telegramShare.addEventListener("click", shareToTelegram);
+copyShare.addEventListener("click", copyShareLink);
+nativeShareButton.addEventListener("click", nativeShare);
 
-shareButton.addEventListener(
-  "click",
-  shareFortune
-);
+shareModal.addEventListener("click", event => {
+  if (event.target === shareModal) closeShare();
+});
 
-
-/* =========================================================
-   Initial setup
-========================================================= */
+drawButton.addEventListener("click", drawFortune);
+againButton.addEventListener("click", drawAgain);
 
 preloadImages(boxFrames);
 preloadImages(fortunes);
-
 showBoxFrame(0);

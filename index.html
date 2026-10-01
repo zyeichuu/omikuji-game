@@ -6,28 +6,14 @@
 <title>Omikuji Fortune</title>
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <div class="omikuji-game">
 
   <!-- DRAW SCREEN -->
   <section id="drawScreen" class="screen active">
-
     <div class="box-stage" id="boxStage">
-      <!--
-        The four supplied box images are swapped in sequence:
-        0 = no stick
-        1 = stick-1
-        2 = stick-2
-        3 = stick-3
-      -->
-      <img
-        id="boxImage"
-        class="box-image"
-        src="assets/Omikuji-box-no-stick.png"
-        alt="Omikuji box"
-      >
+      <img id="boxImage" class="box-image" src="assets/Omikuji-box-no-stick.png" alt="Omikuji box">
     </div>
 
     <button id="drawButton" class="draw-button" type="button">
@@ -35,34 +21,64 @@
       <span>Draw Your Fortune</span>
     </button>
 
-    <p id="drawMessage" class="draw-message">
-      Your fortune is waiting.
-    </p>
-
+    <p id="drawMessage" class="draw-message">Your fortune is waiting.</p>
   </section>
-
 
   <!-- FORTUNE SCREEN -->
   <section id="fortuneScreen" class="screen">
-
     <div class="fortune-card">
       <img id="fortuneImage" src="" alt="Your Fortune">
     </div>
 
     <div class="fortune-buttons">
-      <button id="shareButton" class="share-button" type="button">
-        Share My Fortune
-      </button>
-
-      <button id="againButton" class="again-button" type="button">
-        Draw Again
-      </button>
-
+      <button id="shareButton" class="share-button" type="button">Share My Fortune</button>
+      <button id="againButton" class="again-button" type="button">Draw Again</button>
       <p id="shareStatus" class="share-status" aria-live="polite"></p>
     </div>
-
   </section>
 
+</div>
+
+<!-- SHARE MODAL -->
+<div id="shareModal" class="share-modal" aria-hidden="true">
+  <div class="share-modal-box" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+    <button id="closeShareModal" class="share-close" type="button" aria-label="Close">×</button>
+
+    <h2 id="shareTitle">Share My Fortune</h2>
+    <p id="shareFortuneText">Share your Omikuji fortune with your friends!</p>
+
+    <div class="share-options">
+      <button id="nativeShareButton" class="share-option" type="button">
+        <span class="share-icon">↗</span>
+        <span>More</span>
+      </button>
+
+      <button id="whatsappShare" class="share-option" type="button">
+        <span class="share-icon">●</span>
+        <span>WhatsApp</span>
+      </button>
+
+      <button id="facebookShare" class="share-option" type="button">
+        <span class="share-icon">f</span>
+        <span>Facebook</span>
+      </button>
+
+      <button id="xShare" class="share-option" type="button">
+        <span class="share-icon">𝕏</span>
+        <span>X</span>
+      </button>
+
+      <button id="telegramShare" class="share-option" type="button">
+        <span class="share-icon">✈</span>
+        <span>Telegram</span>
+      </button>
+
+      <button id="copyShare" class="share-option" type="button">
+        <span class="share-icon">🔗</span>
+        <span>Copy Link</span>
+      </button>
+    </div>
+  </div>
 </div>
 
 <script src="script.js"></script>
