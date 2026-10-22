@@ -1,86 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Omikuji Fortune</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff7ee">
+  <title>HOKTO Mushroom New Year Omikuji</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <main id="omikuji-game" class="game-shell">
+    <section class="draw-screen" id="drawScreen" aria-label="Draw your fortune">
+      <div class="box-stage" id="boxStage">
+        <img id="boxImage" class="box-image" src="assets/Omikuji-box-no-stick.png" alt="Omikuji fortune box">
+      </div>
+      <button id="drawButton" class="primary-button" type="button">おみくじ&nbsp; Draw Your Fortune</button>
+      <p id="statusText" class="status-text" aria-live="polite">Your fortune is waiting.</p>
+    </section>
 
-<div class="omikuji-game">
+    <section id="resultScreen" class="result-screen" hidden aria-label="Your fortune result">
+      <img id="fortuneImage" class="fortune-image" src="" alt="Your Omikuji fortune">
+      <div class="result-actions">
+        <button id="openShareButton" class="primary-button" type="button">Share My Fortune</button>
+        <button id="drawAgainButton" class="secondary-button" type="button">Draw Again</button>
+      </div>
+      <p id="resultStatus" class="status-text" aria-live="polite"></p>
+    </section>
 
-  <!-- DRAW SCREEN -->
-  <section id="drawScreen" class="screen active">
-    <div class="box-stage" id="boxStage">
-      <img id="boxImage" class="box-image" src="assets/Omikuji-box-no-stick.png" alt="Omikuji box">
+    <div id="shareModal" class="share-overlay" hidden>
+      <section class="share-modal" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+        <button id="closeShareButton" class="close-button" type="button" aria-label="Close share dialog">×</button>
+        <h2 id="shareTitle">My Fortune Is... 🍄✨</h2>
+        <p class="share-description">I just drew my fortune from the HOKTO Mushroom New Year Omikuji! 🍄✨ Try yours too!</p>
+        <div class="share-options">
+          <button class="share-btn" id="instagramShare" type="button"><span class="share-icon instagram-icon" aria-hidden="true">◎</span><span>Instagram</span></button>
+          <button class="share-btn" id="whatsappShare" type="button"><span class="share-icon whatsapp-icon" aria-hidden="true">◔</span><span>WhatsApp</span></button>
+          <button class="share-btn" id="facebookShare" type="button"><span class="share-icon" aria-hidden="true">f</span><span>Facebook</span></button>
+          <button class="share-btn" id="xShare" type="button"><span class="share-icon" aria-hidden="true">𝕏</span><span>X</span></button>
+          <button class="share-btn" id="telegramShare" type="button"><span class="share-icon" aria-hidden="true">➤</span><span>Telegram</span></button>
+          <button class="share-btn" id="copyLinkShare" type="button"><span class="share-icon" aria-hidden="true">🔗</span><span>Copy Link</span></button>
+        </div>
+        <p id="shareFeedback" class="share-feedback" aria-live="polite"></p>
+        <p class="instagram-note">Instagram sharing works best on mobile. You can share the link or take a screenshot of your fortune for your Story.</p>
+      </section>
     </div>
-
-    <button id="drawButton" class="draw-button" type="button">
-      <span class="jp">おみくじ</span>
-      <span>Draw Your Fortune</span>
-    </button>
-
-    <p id="drawMessage" class="draw-message">Your fortune is waiting.</p>
-  </section>
-
-  <!-- FORTUNE SCREEN -->
-  <section id="fortuneScreen" class="screen">
-    <div class="fortune-card">
-      <img id="fortuneImage" src="" alt="Your Fortune">
-    </div>
-
-    <div class="fortune-buttons">
-      <button id="shareButton" class="share-button" type="button">Share My Fortune</button>
-      <button id="againButton" class="again-button" type="button">Draw Again</button>
-      <p id="shareStatus" class="share-status" aria-live="polite"></p>
-    </div>
-  </section>
-
-</div>
-
-<!-- SHARE MODAL -->
-<div id="shareModal" class="share-modal" aria-hidden="true">
-  <div class="share-modal-box" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
-    <button id="closeShareModal" class="share-close" type="button" aria-label="Close">×</button>
-
-    <h2 id="shareTitle">Share My Fortune</h2>
-    <p id="shareFortuneText">Share your Omikuji fortune with your friends!</p>
-
-    <div class="share-options">
-      <button id="nativeShareButton" class="share-option" type="button">
-        <span class="share-icon">↗</span>
-        <span>More</span>
-      </button>
-
-      <button id="whatsappShare" class="share-option" type="button">
-        <span class="share-icon">●</span>
-        <span>WhatsApp</span>
-      </button>
-
-      <button id="facebookShare" class="share-option" type="button">
-        <span class="share-icon">f</span>
-        <span>Facebook</span>
-      </button>
-
-      <button id="xShare" class="share-option" type="button">
-        <span class="share-icon">𝕏</span>
-        <span>X</span>
-      </button>
-
-      <button id="telegramShare" class="share-option" type="button">
-        <span class="share-icon">✈</span>
-        <span>Telegram</span>
-      </button>
-
-      <button id="copyShare" class="share-option" type="button">
-        <span class="share-icon">🔗</span>
-        <span>Copy Link</span>
-      </button>
-    </div>
-  </div>
-</div>
-
-<script src="script.js"></script>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
